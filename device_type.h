@@ -1,5 +1,5 @@
-#ifndef DEVICE_TYPE
-#define DEVICE_TYPE
+#ifndef DEVICE_TYPE_H
+#define DEVICE_TYPE_H
 
 // Constants
 #define MAX_NAME 64
