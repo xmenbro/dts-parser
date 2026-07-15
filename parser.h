@@ -5,5 +5,7 @@
 
 // Remove unwanted spaces
 char* trim(char* str);
+// Remove quotes from string
+void strip_quotes(char* str);
 
 #endif

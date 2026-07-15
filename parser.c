@@ -22,3 +22,17 @@ char* trim(char* str) {
     end[1] = '\0';
     return str;
 }
+
+// Remove quotes from string
+void strip_quotes(char* str) {
+    char* ptr = str; // Current pointer
+    char* result = str; // Result pointer
+    
+    while (*ptr) {
+        // If ptr doesn't contain these chars then add to result pointer
+        if (*ptr != '"' && *ptr != '\'' && *ptr != ';' && *ptr != ',')
+            *result++ = *ptr;
+        ptr++; // Step to the next char
+    }
+    *result = '\0';
+}
