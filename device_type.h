@@ -20,13 +20,13 @@ struct gpio_entry {
     int gpio_offset; // Offset inside block
     int gpio_index; // gpio_block*32 + gpio_offset
     int active_low; // If active_low = 1 then ACTIVE_LOW else ACTIVE_HIGH
-    gpio_type type; // Type - LED or button
+    enum gpio_type type; // Type - LED or button
     char state[8]; // Text representation of active_low field
 };
 
 // Array of gpio_entry
 struct gpio_table {
-    gpio_entry entries[MAX_DEVICES];
+    struct gpio_entry entries[MAX_DEVICES];
     int count;
 };
 
