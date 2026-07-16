@@ -1,6 +1,5 @@
 #include "parser.h"
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
@@ -35,4 +34,46 @@ void strip_quotes(char* str) {
         ptr++; // Step to the next char
     }
     *result = '\0';
+}
+
+// Exctract property from line
+int extract_property(const char* line, const char* prop, char* value, size_t max_len) {
+    // Copy line to temp buf
+    char temp[1024];
+    strncpy(temp, line, sizeof(temp) - 1);
+    temp[sizeof(temp) - 1] = '\0';
+
+    // This line contains needed property
+    char* ptr = strstr(temp, prop);
+    if (!ptr) // return false if not
+        return 0;
+    
+    // Trying to find =
+    ptr = strchr(ptr, '=');
+    if (!ptr)
+        return 0;
+    ptr++; // Skip '='
+
+    // Skip spaces
+    while (*ptr && isspace(*ptr))
+        ptr++;
+    if (!*ptr)
+        return 0;
+
+    // Copy value of this property
+    char* end = ptr;
+    while (*end && *end != ';' && *end != ' ' && *end != '\t' && *end != '\n')
+        end++;
+    
+    // Calculate length of value
+    size_t len = end - ptr;
+    if (len >= max_len)
+        len = max_len - 1;
+    
+    // Copy to value
+    strncpy(value, ptr, len);
+    value[len] = '\0';
+    strip_quotes(value);
+
+    return 1;
 }

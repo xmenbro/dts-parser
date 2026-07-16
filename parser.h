@@ -2,10 +2,13 @@
 #define PARSER_H
 
 #include "device_type.h"
+#include <stdlib.h>
 
 // Remove unwanted spaces
 char* trim(char* str);
 // Remove quotes from string
 void strip_quotes(char* str);
+// Exctract property from line
+int extract_property(const char* line, const char* prop, char* value, size_t max_len);
 
 #endif
