@@ -4,6 +4,7 @@
 // Constants
 #define MAX_NAME 64
 #define MAX_DEVICES 256
+#define MAX_LINE 1024
 
 // GPIO type in this case it can be led or button
 enum gpio_type {
