@@ -137,3 +137,19 @@ int parse_gpio(const char* line, char* controller, int* offset, int* flags) {
 
     return 1;
 }
+
+// Extract gpio block number
+int extract_gpio_block(const char* controller) {
+    if (!controller || strlen(controller) <= 4)
+        return -1;
+    // Find number at the end of the string
+    const char* ptr = controller + 4; // gpio = 4 chars, then number
+    // Skip non-digit
+    while(*ptr && !isdigit(*ptr))
+        ptr++;
+
+    if (*ptr)
+        return atoi(ptr);
+
+    return -1;
+}
