@@ -10,5 +10,7 @@ char* trim(char* str);
 void strip_quotes(char* str);
 // Exctract property from line
 int extract_property(const char* line, const char* prop, char* value, size_t max_len);
+// Parse gpio expression : <&gpio N FLAGS>
+int parse_gpio(const char* line, char* controller, int* offset, int* flags);
 
 #endif

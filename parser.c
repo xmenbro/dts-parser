@@ -39,7 +39,7 @@ void strip_quotes(char* str) {
 // Exctract property from line
 int extract_property(const char* line, const char* prop, char* value, size_t max_len) {
     // Copy line to temp buf
-    char temp[1024];
+    char temp[MAX_LINE];
     strncpy(temp, line, sizeof(temp) - 1);
     temp[sizeof(temp) - 1] = '\0';
 
@@ -74,6 +74,66 @@ int extract_property(const char* line, const char* prop, char* value, size_t max
     strncpy(value, ptr, len);
     value[len] = '\0';
     strip_quotes(value);
+
+    return 1;
+}
+
+// Parse gpio expression : <&gpio N FLAGS>
+int parse_gpio(const char* line, char* controller, int* offset, int* flags) {
+    // Copy line to buffer
+    char buffer[MAX_LINE];
+    strncpy(buffer, line, sizeof(buffer) - 1);
+    buffer[sizeof(buffer) - 1] = '\0';
+
+    // Find gpio
+    char* gpio_ptr = strstr(buffer, "&gpio");
+    if (!gpio_ptr)
+        return 0;
+
+    // Find space after gpio
+    char* space_ptr = strchr(gpio_ptr, ' ');
+    if (!space_ptr)
+        return 0;
+
+    // Calculate length of gpio and copy to controller
+    size_t len = space_ptr - gpio_ptr;
+    strncpy(controller, gpio_ptr, len);
+    controller[len] = '\0';
+
+    // Find offset
+    char* offset_ptr = space_ptr;
+    while (*offset_ptr && isspace(*offset_ptr))
+        offset_ptr++;
+    if (!*offset_ptr)
+        return 0;
+    *offset = atoi(offset_ptr);
+
+    // Find flags
+    char* flags_ptr = offset_ptr;
+    // Skip offset e.g - 23
+    while(*flags_ptr && !isspace(*flags_ptr))
+        flags_ptr++;
+    // Skip spaces
+    while(*flags_ptr && isspace(*flags_ptr))
+        flags_ptr++;
+    if (!*flags_ptr)
+        return 0;
+    
+    // Convert GPIO_ACTIVE_X to number
+    char temp[32];
+    char* bracket_ptr = strchr(flags_ptr, '>'); // Find end of this string
+    if (!bracket_ptr)
+        return 0;
+    
+    // Calculate length and copy to temp
+    len = bracket_ptr - flags_ptr;
+    strncpy(temp, flags_ptr, len);
+    temp[len] = '\0';
+    
+    if (strcmp(temp, "GPIO_ACTIVE_LOW") == 0)
+        *flags = 1;
+    else
+        *flags = 0;
 
     return 1;
 }
