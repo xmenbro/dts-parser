@@ -18,5 +18,9 @@ int extract_gpio_block(const char* controller);
 int extract_gpio_base(const char* line);
 // Parse dtsi file
 int parse_dtsi_file(const char* path);
+// Parse dts file
+struct gpio_table parse_dts_file(const char* dts_path, const char* dtsi_path);
+// Print table
+void print_table(const struct gpio_table* table, const char* output_file);
 
 #endif
