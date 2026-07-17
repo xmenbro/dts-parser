@@ -153,3 +153,27 @@ int extract_gpio_block(const char* controller) {
 
     return -1;
 }
+
+// Extract gpio_base
+int extract_gpio_base(const char* line) {
+    // Find '<'
+    char* ptr = strchr(line, '<');
+    if (!ptr)
+        return 0;
+    ptr++; // Skip '<'
+    
+    // Skip &pinctrl
+    while(*ptr && !isdigit(*ptr))
+        ptr++;
+    if (!*ptr)
+        return 0;
+
+    return atoi(ptr);
+}
+
+int main () {
+    const char* str = "gpio-ranges = <&pinctrl 1 0 32>;";
+    int gpio_base = extract_gpio_base(str);
+    printf("gpio_base = %d\n", gpio_base);
+    return 0;
+}
