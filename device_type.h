@@ -20,6 +20,7 @@ struct gpio_entry {
     int gpio_block; // GPIO block number (1,2...)
     int gpio_offset; // Offset inside block
     int gpio_index; // gpio_block*32 + gpio_offset
+    int gpio_base; // Logical gpio number (<&pinctrl 0 0 32> - gpio_base = 0)
     int active_low; // If active_low = 1 then ACTIVE_LOW else ACTIVE_HIGH
     enum gpio_type type; // Type - LED or button
     char state[8]; // Text representation of active_low field

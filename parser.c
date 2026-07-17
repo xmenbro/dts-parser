@@ -153,3 +153,41 @@ int extract_gpio_block(const char* controller) {
 
     return -1;
 }
+
+// Extract gpio_base
+int extract_gpio_base(const char* line) {
+    // Find '<'
+    char* ptr = strchr(line, '<');
+    if (!ptr)
+        return 0;
+    ptr++; // Skip '<'
+    
+    // Skip &pinctrl
+    while(*ptr && !isdigit(*ptr))
+        ptr++;
+    if (!*ptr)
+        return 0;
+
+    return atoi(ptr);
+}
+
+// Parse dtsi file
+int parse_dtsi_file(const char* path) {
+    // Open file
+    FILE* dtsi_file = fopen(path, "r");
+    int gpio_base = -1;
+    
+    if (dtsi_file) {
+        char line[MAX_LINE];
+        // Read line and find gpio-ranges
+        while(fgets(line, sizeof(line), dtsi_file)) {
+            if (strstr(line, "gpio-ranges")) {
+                gpio_base = extract_gpio_base(line);
+                break;
+            }
+        }
+        fclose(dtsi_file);
+    }
+
+    return gpio_base;
+}
