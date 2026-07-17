@@ -171,9 +171,23 @@ int extract_gpio_base(const char* line) {
     return atoi(ptr);
 }
 
-int main () {
-    const char* str = "gpio-ranges = <&pinctrl 1 0 32>;";
-    int gpio_base = extract_gpio_base(str);
-    printf("gpio_base = %d\n", gpio_base);
-    return 0;
+// Parse dtsi file
+int parse_dtsi_file(const char* path) {
+    // Open file
+    FILE* dtsi_file = fopen(path, "r");
+    int gpio_base = -1;
+    
+    if (dtsi_file) {
+        char line[MAX_LINE];
+        // Read line and find gpio-ranges
+        while(fgets(line, sizeof(line), dtsi_file)) {
+            if (strstr(line, "gpio-ranges")) {
+                gpio_base = extract_gpio_base(line);
+                break;
+            }
+        }
+        fclose(dtsi_file);
+    }
+
+    return gpio_base;
 }

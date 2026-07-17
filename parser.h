@@ -16,5 +16,7 @@ int parse_gpio(const char* line, char* controller, int* offset, int* flags);
 int extract_gpio_block(const char* controller);
 // Extract gpio_base
 int extract_gpio_base(const char* line);
+// Parse dtsi file
+int parse_dtsi_file(const char* path);
 
 #endif
