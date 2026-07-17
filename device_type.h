@@ -14,7 +14,6 @@ enum gpio_type {
 
 // This structure represents needed information about gpio
 struct gpio_entry {
-    char name[MAX_NAME]; // Node's name in DTS
     char label[MAX_NAME]; // Label from DTS
     char controller[MAX_NAME]; // Contoller name ("gpio1")
     int gpio_block; // GPIO block number (1,2...)
