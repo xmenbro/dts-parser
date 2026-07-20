@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra
 LDFLAGS =
 
 # Target
-TARGET = dts_parser.out
+TARGET = dts_parser
 
 # Source files
 SRCS = parser.c main.c
