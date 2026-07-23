@@ -127,6 +127,8 @@ int parse_gpio(const char* line, char* controller, int* offset, int* flags) {
     
     // Calculate length and copy to temp
     len = bracket_ptr - flags_ptr;
+    if (len >= 32)
+        return 0;
     strncpy(temp, flags_ptr, len);
     temp[len] = '\0';
     
@@ -200,7 +202,7 @@ struct gpio_table parse_dts_file(const char* dts_path, const char* dtsi_path) {
         gpio_base = parse_dtsi_file(dtsi_path);
 
     // Open dts file
-    struct gpio_table table;
+    struct gpio_table table = {0};
     FILE* dts_file = fopen(dts_path, "r");
     if (!dts_file) {
         fprintf(stderr, "ERROR: Can't open dts file '%s' : %s\n", dts_path, strerror(errno));
@@ -218,9 +220,6 @@ struct gpio_table parse_dts_file(const char* dts_path, const char* dtsi_path) {
     int brace_level = 0; // Current node depth
     int parent_brace_level = 0; // Parent node depth
  
-    // Set zero
-    table.count = 0;
-
     // Read dts file
     while (fgets(line, sizeof(line), dts_file)) {
         char* trimmed = trim(line); // Remove spaces
@@ -234,7 +233,7 @@ struct gpio_table parse_dts_file(const char* dts_path, const char* dtsi_path) {
         // Check {
         if (strstr(trimmed, "{")) {
             char node_name[MAX_NAME] = "";
-            sscanf(trimmed, "%s", node_name);
+            sscanf(trimmed, "%63s", node_name);
             
             // Remove '{' from name
             char* brace = strchr(node_name, '{');
