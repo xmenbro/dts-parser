@@ -127,6 +127,8 @@ int parse_gpio(const char* line, char* controller, int* offset, int* flags) {
     
     // Calculate length and copy to temp
     len = bracket_ptr - flags_ptr;
+    if (len >= 32)
+        return 0;
     strncpy(temp, flags_ptr, len);
     temp[len] = '\0';
     
