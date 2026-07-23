@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
             if (i + 1 < argc)
                 dtsi_path = argv[++i]; 
             else {
-                fprintf(stderr, "Error: -d requires an argument\n");
+                fprintf(stderr, "Error: -i requires an argument\n");
                 return 1;
             }
         } 
