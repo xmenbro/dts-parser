@@ -200,7 +200,7 @@ struct gpio_table parse_dts_file(const char* dts_path, const char* dtsi_path) {
         gpio_base = parse_dtsi_file(dtsi_path);
 
     // Open dts file
-    struct gpio_table table;
+    struct gpio_table table = {0};
     FILE* dts_file = fopen(dts_path, "r");
     if (!dts_file) {
         fprintf(stderr, "ERROR: Can't open dts file '%s' : %s\n", dts_path, strerror(errno));
@@ -218,9 +218,6 @@ struct gpio_table parse_dts_file(const char* dts_path, const char* dtsi_path) {
     int brace_level = 0; // Current node depth
     int parent_brace_level = 0; // Parent node depth
  
-    // Set zero
-    table.count = 0;
-
     // Read dts file
     while (fgets(line, sizeof(line), dts_file)) {
         char* trimmed = trim(line); // Remove spaces

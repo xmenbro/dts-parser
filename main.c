@@ -39,7 +39,11 @@ int main(int argc, char **argv) {
     }
     
     struct gpio_table table = parse_dts_file(input_file, dtsi_path);
-    print_table(&table, output_file);
     
+    if (table.count > 0)
+        print_table(&table, output_file);
+    else
+        fprintf(stderr, "Error: The table is empty\n");
+
     return 0;
 }
