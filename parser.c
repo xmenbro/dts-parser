@@ -231,7 +231,7 @@ struct gpio_table parse_dts_file(const char* dts_path, const char* dtsi_path) {
         // Check {
         if (strstr(trimmed, "{")) {
             char node_name[MAX_NAME] = "";
-            sscanf(trimmed, "%s", node_name);
+            sscanf(trimmed, "%63s", node_name);
             
             // Remove '{' from name
             char* brace = strchr(node_name, '{');
